@@ -1,7 +1,8 @@
 // eslint-disable-next-line import/no-extraneous-dependencies
 const express = require('express');
 const mongoose = require('mongoose');
-const rootRouter = require('./routes/users');
+const userRouter = require('./routes/users');
+const cardRouter = require('./routes/cards');
 
 const PORT = 3000;
 const DATABASE_URL = 'mongodb://localhost:27017/mestodb';
@@ -9,7 +10,7 @@ const DATABASE_URL = 'mongodb://localhost:27017/mestodb';
 const app = express();
 
 mongoose
-  .connect(DATABASE_URL)
+  .connect('mongodb://127.0.0.1:27017/mestodb')
   .then(() => {
     console.log(`Connected to database on ${DATABASE_URL}`);
   })
@@ -18,7 +19,15 @@ mongoose
     console.error(err);
   });
 
-app.use('/', rootRouter);
+app.use((req, res, next) => {
+  req.user = {
+    _id: '643f5b6e2e4ca9b63c3b6b84', // вставьте сюда _id созданного в предыдущем пункте пользователя
+  };
+  next();
+});
+app.use(express.json());
+app.use(userRouter);
+app.use(cardRouter);
 
 app.listen(PORT, () => {
   console.log(`Свервер стартанул на ${PORT}`);

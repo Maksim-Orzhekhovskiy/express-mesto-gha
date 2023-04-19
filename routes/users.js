@@ -1,29 +1,23 @@
 const express = require('express');
 
-const router = express.Router();
-// IMPORT CONTROLLERS
+const userRouter = express.Router();
+
 const {
-  getAllUsers,
-  getUser,
+  getUsers,
   createUser,
+  getUserById,
   updateUserInfo,
   updateUserAvatar,
 } = require('../controllers/users');
 
-// GET ALL USERS ROUTE
-router.get('/', getAllUsers);
+userRouter.get('/users', getUsers);
 
-// GET USER ROUTE
-router.get('/:userId', getUser);
+userRouter.get('/:userId', getUserById);
 
-// CREATE USER ROUTE
-router.post('/', createUser);
+userRouter.post('/users', createUser);
 
-// UPDATE USER INFO
-router.patch('/me', updateUserInfo);
+userRouter.patch('/me', updateUserInfo);
 
-// UPDATE USER AVATAR
-router.patch('/me/avatar', updateUserAvatar);
+userRouter.patch('/me/avatar', updateUserAvatar);
 
-// MODULE EXPORT
-module.exports = router;
+module.exports = userRouter;
