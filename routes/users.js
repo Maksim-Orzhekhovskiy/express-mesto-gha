@@ -20,8 +20,8 @@ userRouter.patch("/me", updateUserInfo);
 
 userRouter.patch("/me/avatar", updateUserAvatar);
 
-userRouter.use("*", (req, res) => {
+/* userRouter.use("*", (req, res) => {
   res.status(404).send({ message: "Запрашиваемый ресурс не найден" });
-});
+}); */
 
 module.exports = userRouter;
