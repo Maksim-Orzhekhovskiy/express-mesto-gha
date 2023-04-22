@@ -1,13 +1,11 @@
 const Card = require("../model/cards");
+const { handleErrors } = require("../errors/errors");
 
 const getAllCards = (req, res) => {
   Card.find({})
     .populate(["owner", "likes"])
     .then((cards) => res.send(cards))
-    .catch((err) => {
-      console.error(err);
-      res.status(500).send({ message: "Ошибка сервера" });
-    });
+    .catch((err) => handleErrors(err, res));
 };
 
 const createCard = (req, res) => {
@@ -16,30 +14,21 @@ const createCard = (req, res) => {
   Card.create({ name, link, owner: ownerId })
     .then((card) => card.populate("owner"))
     .then((card) => res.status(201).send(card))
-    .catch((err) => {
-      console.error(err);
-      res.status(500).send({ message: "Ошибка сервера" });
-    });
+    .catch((err) => handleErrors(err, res));
 };
 
 const  deleteCard = (req, res) => {
   Card.findByIdAndDelete(req.params.cardId)
     .orFail()
     .then(() => res.send({ message: "Картинка удалена" }))
-    .catch((err) => {
-      console.error(err);
-      res.status(500).send({ message: "Ошибка сервера" });
-    });
+    .catch((err) => handleErrors(err, res));
 };
 
 const cardLikesUpdate = (req, res, updateData) => {
   Card.findByIdAndUpdate(req.params.cardId, updateData, { new: true })
     .populate(["owner", "likes"])
     .then((card) => res.send(card))
-    .catch((err) => {
-      console.error(err);
-      res.status(500).send({ message: "Ошибка сервера" });
-    });
+    .catch((err) => handleErrors(err, res));
 };
 
 const likeCard = (req, res) => {
