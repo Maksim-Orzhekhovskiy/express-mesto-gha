@@ -19,13 +19,13 @@ mongoose
     console.error(err);
   });
 
+app.use(express.json());
 app.use((req, res, next) => {
   req.user = {
     _id: '643f5b6e2e4ca9b63c3b6b84', // вставьте сюда _id созданного в предыдущем пункте пользователя
   };
   next();
 });
-app.use(express.json());
 app.use(userRouter);
 app.use(cardRouter);
 
