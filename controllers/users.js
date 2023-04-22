@@ -1,7 +1,6 @@
 const User = require("../model/users");
 const { handleErrors } = require("../errors/errors")
 
-
 const getUsers = (req, res) => {
   User.find({})
     .then((users) => {
@@ -14,6 +13,10 @@ const getUserById = (req, res) => {
   User.findById(req.params.userId)
     .orFail()
     .then((user) => {
+      if (!user) {
+        res.status(404).send({ message: "Нет пользователя с таким id" });
+        return;
+      }
       res.send(user);
     })
     .catch((err) => handleErrors(err, res));
@@ -31,32 +34,22 @@ const createUser = (req, res) => {
     .catch((err) => handleErrors(err, res));
 };
 
-const userUpdate = (req, res, updateData) => {
+const userUpdate = (req, res, { avatar }) => {
   const userId = req.user._id;
-  User.findByIdAndUpdate(userId, updateData, { new: true, runValidators: true })
+  User.findByIdAndUpdate(userId, { avatar }, { new: true, runValidators: true })
     .orFail()
     .then((user) => res.send(user))
     .catch((err) => handleErrors(err, res));
 };
 
+
 const updateUserInfo = (req, res) => {
-  const { name, about } = req.body;
-  const updateData = {};
-  if (name) {
-    updateData.name = name;
-  }
-  if (about) {
-    updateData.about = about;
-  }
+  const updateData = req.body;
   userUpdate(req, res, updateData);
 };
 
 const updateUserAvatar = (req, res) => {
   const { avatar } = req.body;
-  const updateData = {};
-  if (avatar) {
-    updateData.avatar = avatar;
-  }
   userUpdate(req, res, updateData);
 };
 
