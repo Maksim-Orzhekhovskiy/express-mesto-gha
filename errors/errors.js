@@ -7,7 +7,7 @@ const {
 const handleErrors = (err, res) => {
   if (err instanceof ValidationError) {
     const errorMessage = Object.values(err.errors).map((error) => error.message).join(' ');
-    return res.status(404).send({
+    return res.status(400).send({
       message: `Переданы некорректные данные. ${errorMessage}`,
     });
   }
