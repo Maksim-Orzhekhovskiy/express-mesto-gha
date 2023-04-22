@@ -22,12 +22,16 @@ mongoose
 app.use(express.json());
 app.use((req, res, next) => {
   req.user = {
-    _id: '643f5b6e2e4ca9b63c3b6b84', // вставьте сюда _id созданного в предыдущем пункте пользователя
+    _id: '643ec26fba83e927b24652c6', // вставьте сюда _id созданного в предыдущем пункте пользователя
   };
   next();
 });
 app.use(userRouter);
 app.use(cardRouter);
+
+app.patch('/404', (req, res) => {
+  res.status(404).json({ message: 'Ты ошибся парень /404' });
+});
 
 app.listen(PORT, () => {
   console.log(`Свервер стартанул на ${PORT}`);

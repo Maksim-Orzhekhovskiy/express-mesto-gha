@@ -1,5 +1,5 @@
 const User = require("../model/users");
-const { handleErrors } = require("../errors/errors")
+const { handleErrors } = require("../errors/errors");
 
 const getUsers = (req, res) => {
   User.find({})
@@ -7,16 +7,14 @@ const getUsers = (req, res) => {
       res.send(users);
     })
     .catch((err) => handleErrors(err, res));
-}
+};
 
 const getUserById = (req, res) => {
   User.findById(req.params.userId)
-    .orFail()
+    .orFail(() => {
+      throw new Error("Данный пользователь не найден");
+    })
     .then((user) => {
-      if (!user) {
-        res.status(404).send({ message: "Нет пользователя с таким id" });
-        return;
-      }
       res.send(user);
     })
     .catch((err) => handleErrors(err, res));
@@ -26,6 +24,7 @@ const createUser = (req, res) => {
   const { name, about, avatar } = req.body;
   if (!name || !about || !avatar) {
     res.status(400).send({ message: "Не передано обязательное поле" });
+    return;
   }
   User.create({ name, about, avatar })
     .then((user) => {
@@ -34,14 +33,20 @@ const createUser = (req, res) => {
     .catch((err) => handleErrors(err, res));
 };
 
-const userUpdate = (req, res, { avatar }) => {
+const userUpdate = (req, res, updateData) => {
   const userId = req.user._id;
-  User.findByIdAndUpdate(userId, { avatar }, { new: true, runValidators: true })
-    .orFail()
+  User.findByIdAndUpdate(
+    userId,
+    updateData,
+    { avatar },
+    { new: true, runValidators: true }
+  )
+    .orFail(() => {
+      throw new Error("Данный пользователь не найден");
+    })
     .then((user) => res.send(user))
     .catch((err) => handleErrors(err, res));
 };
-
 
 const updateUserInfo = (req, res) => {
   const updateData = req.body;
@@ -49,8 +54,19 @@ const updateUserInfo = (req, res) => {
 };
 
 const updateUserAvatar = (req, res) => {
-  const { avatar } = req.body;
-  userUpdate(req, res, updateData);
+  const { avatar } = req.body; // Получаем новый url-адрес аватара из тела запроса
+  User.findByIdAndUpdate(
+    req.user._id,
+    { avatar },
+    { new: true, runValidators: true }
+  )
+    .orFail(() => {
+      throw new Error("Данный пользователь не найден");
+    })
+    .then((user) => {
+      res.send(user);
+    })
+    .catch((err) => handleErrors(err, res));
 };
 
 module.exports = {
