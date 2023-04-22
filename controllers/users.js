@@ -1,4 +1,4 @@
-const User = require('../model/users');
+const User = require("../model/users");
 
 const getUsers = (req, res) => {
   User.find({})
@@ -6,7 +6,7 @@ const getUsers = (req, res) => {
       res.send(users);
     })
     .catch(() => {
-      res.status(500).send({ message: 'Произошла ошибка' });
+      res.status(500).send({ message: "Произошла ошибка" });
     });
 };
 
@@ -14,17 +14,17 @@ const getUserById = (req, res) => {
   User.findById(req.params.userId)
     .then((user) => {
       if (!user) {
-        res.status(404).send({ message: 'Нет пользователя с таким id' });
+        res.status(404).send({ message: "Нет пользователя с таким id" });
         return;
       }
       res.send(user);
     })
     .catch((err) => {
-      if (err.name === 'Error') {
-        res.status(400).send({ message: 'Невалидный id' });
+      if (err.name === "Error") {
+        res.status(400).send({ message: "Невалидный id" });
         return;
       }
-      res.status(500).send({ message: 'Произошла ошибка' });
+      res.status(500).send({ message: "Произошла ошибка" });
     });
 };
 
@@ -35,11 +35,11 @@ const createUser = (req, res) => {
       res.status(201).send(user);
     })
     .catch((err) => {
-      if (err.name === 'Error') {
+      if (err.name === "Error") {
         res.status(400).send({ message: err.message });
         return;
       }
-      res.status(500).send({ message: 'Произошла ошибка' });
+      res.status(500).send({ message: "Произошла ошибка" });
     });
 };
 
@@ -48,11 +48,11 @@ const userUpdate = (req, res, updateData) => {
   User.findByIdAndUpdate(userId, updateData, { new: true, runValidators: true })
     .then((user) => res.send(user))
     .catch((err) => {
-      if (err.name === 'Error') {
+      if (err.name === "Error") {
         res.status(400).send({ message: err.message });
         return;
       }
-      res.status(500).send({ message: 'Произошла ошибка' });
+      res.status(500).send({ message: "Произошла ошибка" });
     });
 };
 
