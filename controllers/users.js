@@ -24,6 +24,9 @@ const getUserById = (req, res) => {
 
 const createUser = (req, res) => {
   const { name, about, avatar } = req.body;
+  if (!name || !about) {
+    res.status(400).send({ message: "Не передано обязательное поле" });
+  }
   User.create({ name, about, avatar })
     .then((user) => {
       res.status(201).send(user);
