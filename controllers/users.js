@@ -10,7 +10,12 @@ const getUsers = (req, res) => {
 };
 
 const getUserById = (req, res) => {
-  User.findById(req.params.userId)
+  const { userId } = req.params;
+  if (!userId.match(/^[0-9a-fA-F]{24}$/)) {
+    res.status(400).send({ message: "Передан некорректный id пользователя" });
+    return;
+  }
+  User.findById(userId)
     .orFail(() => {
       throw new Error("Данный пользователь не найден");
     })
