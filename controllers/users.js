@@ -1,12 +1,16 @@
 const User = require("../model/users");
+const {
+  ValidationError,
+  CastError,
+} = require('mongoose').Error;
 
 const getUsers = (req, res) => {
   User.find({})
     .then((users) => {
       res.send(users);
     })
-    .catch(() => {
-      res.status(500).send({ message: "Произошла ошибка" });
+    .catch((err) => {
+      res.status(500).send({ message: ` Произошла ошибка: ${err} ` });
     });
 };
 
@@ -20,11 +24,11 @@ const getUserById = (req, res) => {
       res.send(user);
     })
     .catch((err) => {
-      if (err.name === "Error") {
+      if (err.name === "CastError") {
         res.status(400).send({ message: "Невалидный id" });
         return;
       }
-      res.status(500).send({ message: "Произошла ошибка" });
+      res.status(500).send({ message: ` Произошла ошибка: ${err} ` });
     });
 };
 
@@ -35,11 +39,11 @@ const createUser = (req, res) => {
       res.status(201).send(user);
     })
     .catch((err) => {
-      if (err.name === "Error") {
+      if (err.name === "ValidationError") {
         res.status(400).send({ message: err.message });
         return;
       }
-      res.status(500).send({ message: "Произошла ошибка" });
+      res.status(500).send({ message: `Произошла ошибка: ${err} ` });
     });
 };
 
@@ -48,11 +52,15 @@ const userUpdate = (req, res, updateData) => {
   User.findByIdAndUpdate(userId, updateData, { new: true, runValidators: true })
     .then((user) => res.send(user))
     .catch((err) => {
-      if (err.name === "Error") {
+      if (err.name === "CastError") {
+        res.status(400).send({ message: "Невалидный id" });
+        return;
+      }
+      if (err.name === "ValidationError") {
         res.status(400).send({ message: err.message });
         return;
       }
-      res.status(500).send({ message: "Произошла ошибка" });
+      res.status(500).send({ message: `Произошла ошибка: ${err} ` });
     });
 };
 
