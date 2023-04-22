@@ -1,7 +1,5 @@
 const Card = require("../model/cards");
 
-const CREATE_CODE = 201;
-
 const getAllCards = (req, res) => {
   Card.find({})
     .populate(["owner", "likes"])
@@ -17,7 +15,7 @@ const createCard = (req, res) => {
   const ownerId = req.user._id;
   Card.create({ name, link, owner: ownerId })
     .then((card) => card.populate("owner"))
-    .then((card) => res.status(CREATE_CODE).send(card))
+    .then((card) => res.status(201).send(card))
     .catch((err) => {
       console.error(err);
       res.status(500).send({ message: "Ошибка сервера" });
