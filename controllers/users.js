@@ -11,6 +11,7 @@ const getUsers = (req, res) => {
 
 const getUserById = (req, res) => {
   User.findById(req.params.userId)
+    .orFail()
     .then((user) => {
       if (!user) {
         res.status(404).send({ message: "Нет пользователя с таким id" });

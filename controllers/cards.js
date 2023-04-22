@@ -26,6 +26,7 @@ const  deleteCard = (req, res) => {
 
 const cardLikesUpdate = (req, res, updateData) => {
   Card.findByIdAndUpdate(req.params.cardId, updateData, { new: true })
+    .orFail()
     .populate(["owner", "likes"])
     .then((card) => res.send(card))
     .catch((err) => handleErrors(err, res));
