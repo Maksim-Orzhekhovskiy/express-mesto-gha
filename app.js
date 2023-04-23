@@ -4,7 +4,7 @@ const mongoose = require("mongoose");
 const allRoutes = require("./routes/index");
 
 
-const { PORT = 8094 } = process.env;
+const { PORT = 3000 } = process.env;
 const DATABASE_URL = "mongodb://localhost:27017/mestodb";
 
 const app = express();
