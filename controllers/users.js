@@ -23,12 +23,11 @@ const createUser = (req, res) => {
     .catch((err) => handleErrors(err, res));
 };
 
-const userUpdate = (req, res, updateData) => {
+const userUpdate = (req, res, updateUser) => {
   const userId = req.user._id;
   User.findByIdAndUpdate(
     userId,
-    updateData,
-    { avatar },
+    updateUser,
     { new: true, runValidators: true }
   )
     .orFail()
@@ -37,22 +36,13 @@ const userUpdate = (req, res, updateData) => {
 };
 
 const updateUserInfo = (req, res) => {
-  const updateData = req.body;
-  userUpdate(req, res, updateData);
+  const updateUser = req.body;
+  userUpdate(req, res, updateUser);
 };
 
 const updateUserAvatar = (req, res) => {
-  const { avatar } = req.body; // Получаем новый url-адрес аватара из тела запроса
-  User.findByIdAndUpdate(
-    req.user._id,
-    { avatar },
-    { new: true, runValidators: true }
-  )
-    .orFail()
-    .then((user) => {
-      res.send(user);
-    })
-    .catch((err) => handleErrors(err, res));
+  const updateUser = req.body;
+  userUpdate(req, res, updateUser);
 };
 
 module.exports = {
