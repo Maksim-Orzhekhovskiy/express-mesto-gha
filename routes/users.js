@@ -10,11 +10,11 @@ const {
   updateUserAvatar,
 } = require("../controllers/users");
 
-userRouter.get("/users", getUsers);
+userRouter.get("/", getUsers);
 
 userRouter.get("/:userId", getUserById);
 
-userRouter.post("/users", createUser);
+userRouter.post("/", createUser);
 
 userRouter.patch("/me", updateUserInfo);
 

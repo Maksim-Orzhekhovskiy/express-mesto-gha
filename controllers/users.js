@@ -3,9 +3,7 @@ const { handleErrors } = require("../errors/errors");
 
 const getUsers = (req, res) => {
   User.find({})
-    .then((users) => {
-      res.send(users);
-    })
+    .then((users) => res.send(users))
     .catch((err) => handleErrors(err, res));
 };
 

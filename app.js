@@ -1,10 +1,9 @@
 // eslint-disable-next-line import/no-extraneous-dependencies
 const express = require("express");
 const mongoose = require("mongoose");
-const indexRouter = require("./routes/index");
-
-
-
+const userRouter = require("./routes/users");
+const cardRouter = require("./routes/cards");
+// const errorRouter = require("./routes/error");
 
 const { PORT = 3000 } = process.env;
 const DATABASE_URL = "mongodb://localhost:27017/mestodb";
@@ -14,7 +13,7 @@ const app = express();
 mongoose
   .connect("mongodb://127.0.0.1:27017/mestodb")
   .then(() => {
-    console.log(`Connected to database on ${DATABASE_URL}`);
+    console.log(`Присоеденился к базе ${DATABASE_URL}`);
   })
   .catch((err) => {
     console.log("Error on database connection");
@@ -25,13 +24,14 @@ app.use(express.json());
 
 app.use((req, res, next) => {
   req.user = {
-    _id: "6443e584312c8ef2837c989b", // вставьте сюда _id созданного в предыдущем пункте пользователя
+    _id: "643ec26fba83e927b24652c6", // вставьте сюда _id созданного в предыдущем пункте пользователя
   };
   next();
 });
 
-app.use('/', indexRouter);
-
+app.use('/users', userRouter);
+app.use('/cards', cardRouter);
+// app.use('*', errorRouter);
 
 app.patch("/404", (req, res) => {
   res.status(404).json({ message: "Ты ошибся парень /404" });

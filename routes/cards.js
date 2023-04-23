@@ -10,11 +10,11 @@ const {
   dislikeCard,
 } = require("../controllers/cards");
 
-cardRouter.get("/cards", getAllCards);
+cardRouter.get("/", getAllCards);
 
-cardRouter.post("/cards", createCard);
+cardRouter.post("/", createCard);
 
-cardRouter.delete("/cards/:cardId", deleteCard);
+cardRouter.delete("/:cardId", deleteCard);
 
 cardRouter.put("/:cardId/likes", likeCard);
 
