@@ -1,10 +1,10 @@
 const express = require("express");
 
-const errorRouter = express.Router();
+const router = express.Router();
 
-const { errNotFound } = require('../controllers/error')
+const errNotFound  = require('../controllers/error')
 
 
-errorRouter.all('/*', errNotFound);
+router.all('/*', errNotFound);
 
-module.exports = errorRouter;
+module.exports = router;

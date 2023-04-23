@@ -4,4 +4,4 @@ const errNotFound = (req, res) => {
     });
   };
 
-module.exports = { errNotFound }
+module.exports = errNotFound
