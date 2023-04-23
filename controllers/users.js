@@ -16,6 +16,19 @@ const getUserById = (req, res) => {
 
 const createUser = (req, res) => {
   const { name, about, avatar } = req.body;
+
+  if (!name) {
+    return res.status(400).send({ message: 'Поле name обязательно для заполнения' });
+  }
+
+  if (!about) {
+    return res.status(400).send({ message: 'Поле name обязательно для заполнения' });
+  }
+
+  if (!avatar) {
+    return res.status(400).send({ message: 'Поле name обязательно для заполнения' });
+  }
+
   User.create({ name, about, avatar })
     .then((user) => {
       res.status(201).send(user);
