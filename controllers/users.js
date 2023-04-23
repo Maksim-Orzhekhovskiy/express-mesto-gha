@@ -18,15 +18,15 @@ const createUser = (req, res) => {
   const { name, about, avatar } = req.body;
 
   if (!name) {
-    return res.status(400).send({ message: 'Поле name обязательно для заполнения' });
+    return res.status(400).send({ message: 'Поле Имя обязательно для заполнения' });
   }
 
   if (!about) {
-    return res.status(400).send({ message: 'Поле name обязательно для заполнения' });
+    return res.status(400).send({ message: 'Поле О себе обязательно для заполнения' });
   }
 
   if (!avatar) {
-    return res.status(400).send({ message: 'Поле name обязательно для заполнения' });
+    return res.status(400).send({ message: 'Поле Аватар обязательно для заполнения' });
   }
 
   User.create({ name, about, avatar })
