@@ -1,6 +1,6 @@
 const User = require("../model/users");
 const { handleErrors } = require("../errors/errors");
-const bcrypt = require("bcryptjs");
+const bcrypt = require("bcryptjs")
 const jwt = require("jsonwebtoken");
 
 const getUsers = (req, res) => {
@@ -35,18 +35,6 @@ const createUser = (req, res) => {
       res.status(201).send(data);
     })
     .catch(next);
-
-  // if (!name) {
-  //   return res.status(400).send({ message: 'Поле Имя обязательно для заполнения' });
-  // }
-
-  // if (!about) {
-  //   return res.status(400).send({ message: 'Поле О себе обязательно для заполнения' });
-  // }
-
-  // if (!avatar) {
-  //   return res.status(400).send({ message: 'Поле Аватар обязательно для заполнения' });
-  // }
 };
 
 const userUpdate = (req, res, updateUser) => {
