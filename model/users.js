@@ -1,6 +1,6 @@
 // eslint-disable-next-line import/no-unresolved
 const mongoose = require('mongoose');
-import isEmail from 'validator/lib/isEmail';
+const validator = require('validator');
 
 const userSchema = new mongoose.Schema(
   {
@@ -32,7 +32,7 @@ const userSchema = new mongoose.Schema(
       require: true,
       unique: true,
       validate: {
-        validator: (email) => isEmail(email),
+        validator: validator.isEmail,
         message: 'Неправильный формат почты',
       },
     },
