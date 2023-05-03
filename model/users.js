@@ -1,5 +1,6 @@
 // eslint-disable-next-line import/no-unresolved
 const mongoose = require('mongoose');
+import isEmail from 'validator/lib/isEmail';
 
 const userSchema = new mongoose.Schema(
   {
@@ -8,19 +9,36 @@ const userSchema = new mongoose.Schema(
       minlength: 2,
       maxlength: 30,
       require: true,
-      // default: 'Максямба',
+      default: 'Жак-Ив Кусто',
     },
     about: {
       type: String,
       minlength: 2,
       maxlength: 30,
       require: true,
-      // default: 'Пузямба',
+      default: 'Исследователь',
     },
     avatar: {
       type: String,
       require: true,
-      // default: 'https://avatars.mds.yandex.net/i?id=b3c493fe3b3807e5d45133d79886c64d3876ac1b-9266169-images-thumbs&n=13',
+      default: 'https://pictures.s3.yandex.net/resources/jacques-cousteau_1604399756.png',
+      validate: {
+        validator: (url) => /^(http|https)?:\/\/(www\.)?[-a-zA-Z0-9@:%._+~#=]{1,}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9-._~:/?#[\]@!$&'()*+,;=]*)?$/im.test(url),
+        message: 'Неправильный формат ссылки на аватар',
+      },
+    },
+    email: {
+      type: String,
+      require: true,
+      unique: true,
+      validate: {
+        validator: (email) => isEmail(email),
+        message: 'Неправильный формат почты',
+      },
+    },
+    password: {
+      type: String,
+      require: true,
     },
   },
   {

@@ -1,6 +1,6 @@
 const express = require("express");
-
 const userRouter = express.Router();
+const { celebrate, Joi } = require("celebrate");
 
 const {
   getUsers,
@@ -19,6 +19,5 @@ userRouter.post("/", createUser);
 userRouter.patch("/me", updateUserInfo);
 
 userRouter.patch("/me/avatar", updateUserAvatar);
-
 
 module.exports = userRouter;
