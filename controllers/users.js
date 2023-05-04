@@ -2,6 +2,7 @@ const User = require("../model/users");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const { NODE_ENV, JWT_SECRET } = process.env;
+const UnauthorizedError = require("../errors/unauthorizedError");
 
 const getUsers = (req, res, next) => {
   User.find({})
@@ -73,11 +74,11 @@ const login = (req, res, next) => {
     .select("+password")
     .then((user) => {
       if (!user) {
-        return Promise.reject(new Error("Неправильные почта или пароль"));
+        throw new UnauthorizedError("Необходима авторизация");
       }
       return bcrypt.compare(password, user.password).then((matched) => {
         if (!matched) {
-          return Promise.reject(new Error("Неправильные почта или пароль"));
+          throw new UnauthorizedError("Необходима авторизация");
         }
         const jwtoken = jwt.sign(
           { _id: user._id },
