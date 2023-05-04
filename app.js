@@ -30,7 +30,7 @@ app.use(express.json());
 app.use(cookieParser());
 app.use(helmet());
 
-app.use(auth);
+// app.use(auth);
 
 app.use('/signin', signInRouter);
 app.use('/signup', signUpRouter);
@@ -39,9 +39,9 @@ app.use('/cards', cardRouter);
 
 app.use(validationErrors());
 app.use(errors);
-app.patch("/404", (req, res) => {
-  res.status(404).json({ message: "Ты ошибся парень /404" });
-});
+// app.patch("/404", (req, res) => {
+//   res.status(404).json({ message: "Ты ошибся парень /404" });
+// });
 
 app.listen(PORT, () => {
   console.log(`Свервер стартанул на ${PORT}`);
