@@ -11,10 +11,10 @@ const {
   dislikeCard,
 } = require("../controllers/cards");
 
-cardRouter.get("/", auth, getAllCards);
+cardRouter.get("/", getAllCards);
 
 cardRouter.post(
-  "/", auth,
+  "/",
   celebrate({
     body: Joi.object().keys({
       name: Joi.string().required().min(2).max(30),

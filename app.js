@@ -30,7 +30,7 @@ app.use(express.json());
 app.use(cookieParser());
 app.use(helmet());
 
-// app.use(auth);
+app.use(auth);
 
 app.use('/signin', signInRouter);
 app.use('/signup', signUpRouter);
