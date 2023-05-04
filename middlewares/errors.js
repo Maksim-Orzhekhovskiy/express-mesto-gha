@@ -5,7 +5,7 @@ const UnauthorizedError = require("../errors/unauthorizedError");
 const ForbiddenError = require("../errors/forbiddenError");
 const NotFoundError = require("../errors/notFoundError");
 
-const handleErrors = (err, req, res, next) => {
+module.exports = ((err, req, res, next) => {
   if (err instanceof ValidationError) {
     const errorMessage = Object.values(err.errors)
       .map((error) => error.message)
@@ -49,8 +49,4 @@ const handleErrors = (err, req, res, next) => {
     message: `На сервере произошла ошибка ${err.name}: ${err.message}`,
   });
   return next();
-};
-
-module.exports = {
-  handleErrors,
-};
+});

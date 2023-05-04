@@ -9,7 +9,7 @@ const auth = require("./middlewares/auth")
 const helmet = require('helmet');
 const cookieParser = require('cookie-parser');
 const { errors: validationErrors} = require('celebrate');
-const { handleErrors } = require("./middlewares/errors")
+const errors = require("./middlewares/errors")
 
 const { PORT = 3000 } = process.env;
 const DATABASE_URL = "mongodb://localhost:27017/mestodb";
@@ -38,7 +38,7 @@ app.use('/users', userRouter);
 app.use('/cards', cardRouter);
 
 app.use(validationErrors());
-app.use(handleErrors());
+app.use(errors);
 // app.patch("/404", (req, res) => {
 //   res.status(404).json({ message: "Ты ошибся парень /404" });
 // });
