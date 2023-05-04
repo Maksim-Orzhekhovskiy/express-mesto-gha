@@ -1,6 +1,7 @@
 const express = require("express");
 const userRouter = express.Router();
 const { celebrate, Joi } = require("celebrate");
+const auth = require("../middlewares/auth")
 
 const {
   getUsers,
@@ -21,13 +22,13 @@ userRouter.patch('/me', celebrate({
   }),
 }), updateUserInfo);
 
-userRouter.patch('/me/avatar', celebrate({
+userRouter.patch('/me/avatar', auth, celebrate({
   body: Joi.object().keys({
     avatar: Joi.string().required().regex(/^(http|https)?:\/\/(www\.)?[-a-zA-Z0-9@:%._+~#=]{1,}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9-._~:/?#[\]@!$&'()*+,;=]*)?$/im),
   }),
 }), updateUserAvatar);
 
-userRouter.get('/:userId', celebrate({
+userRouter.get('/:userId', auth, celebrate({
   params: Joi.object().keys({
     userId: Joi.string().required().hex().length(24),
   }),
