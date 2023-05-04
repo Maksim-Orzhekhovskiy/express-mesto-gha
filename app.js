@@ -8,7 +8,7 @@ const signUpRouter = require("./routes/signup");
 const auth = require("./middlewares/auth")
 const helmet = require('helmet');
 const cookieParser = require('cookie-parser');
-const { errors: validationErrors} = require('celebrate');
+const validationErrors = require('celebrate').errors;
 const errors = require("./middlewares/errors")
 
 const { PORT = 3000 } = process.env;
@@ -39,9 +39,9 @@ app.use('/cards', cardRouter);
 
 app.use(validationErrors());
 app.use(errors);
-// app.patch("/404", (req, res) => {
-//   res.status(404).json({ message: "Ты ошибся парень /404" });
-// });
+app.patch("/404", (req, res) => {
+  res.status(404).json({ message: "Ты ошибся парень /404" });
+});
 
 app.listen(PORT, () => {
   console.log(`Свервер стартанул на ${PORT}`);
