@@ -38,7 +38,7 @@ app.use('/users', userRouter);
 app.use('/cards', cardRouter);
 
 app.use(validationErrors());
-app.use(handleErrors);
+app.use(handleErrors());
 // app.patch("/404", (req, res) => {
 //   res.status(404).json({ message: "Ты ошибся парень /404" });
 // });
