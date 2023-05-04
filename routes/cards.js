@@ -14,7 +14,7 @@ const {
 cardRouter.get("/", auth, getAllCards);
 
 cardRouter.post(
-  "/", auth,
+  "/",
   celebrate({
     body: Joi.object().keys({
       name: Joi.string().required().min(2).max(30),
@@ -39,7 +39,7 @@ cardRouter.delete(
 );
 
 cardRouter.put(
-  "/:cardId/likes", auth,
+  "/:cardId/likes",
   celebrate({
     params: Joi.object().keys({
       cardId: Joi.string().length(24).hex().required(),
@@ -49,7 +49,7 @@ cardRouter.put(
 );
 
 cardRouter.delete(
-  "/:cardId/likes", auth,
+  "/:cardId/likes",
   celebrate({
     params: Joi.object().keys({
       cardId: Joi.string().length(24).hex().required(),
