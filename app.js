@@ -12,12 +12,12 @@ const validationErrors = require('celebrate').errors;
 const errors = require("./middlewares/errors")
 
 const { PORT = 3000 } = process.env;
-const DATABASE_URL = "mongodb://localhost:27017/mestodb";
+const DATABASE_URL = "mongodb://localhost:27017/mestob1";
 
 const app = express();
 
 mongoose
-  .connect("mongodb://127.0.0.1:27017/mestodb")
+  .connect("mongodb://127.0.0.1:27017/mestob1")
   .then(() => {
     console.log(`Присоеденился к базе ${DATABASE_URL}`);
   })
@@ -39,9 +39,6 @@ app.use('/cards', cardRouter);
 
 app.use(validationErrors());
 app.use(errors);
-// app.patch("/404", (req, res) => {
-//   res.status(404).json({ message: "Ты ошибся парень /404" });
-// });
 
 app.listen(PORT, () => {
   console.log(`Свервер стартанул на ${PORT}`);

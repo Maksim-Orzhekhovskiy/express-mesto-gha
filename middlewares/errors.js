@@ -40,7 +40,7 @@ module.exports = ((err, req, res, next) => {
     });
   }
   if (err.code === 11000) {
-    return res.status(CONFLICT_ERROR_CODE).send({
+    return res.status(409).send({
       message:
         "Указанный email уже зарегистрирован. Пожалуйста используйте другой",
     });

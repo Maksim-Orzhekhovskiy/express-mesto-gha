@@ -40,9 +40,7 @@ const createUser = (req, res, next) => {
       delete data.password;
       res.status(201).send(data);
     })
-    .catch((next) => {
-      console.log(next)
-    })
+    .catch(next)
 };
 
 const userUpdate = (req, res, updateUser, next) => {
