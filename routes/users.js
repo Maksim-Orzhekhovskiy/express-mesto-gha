@@ -1,6 +1,7 @@
 const express = require("express");
 const userRouter = express.Router();
 const { celebrate, Joi } = require("celebrate");
+const auth = require("../middlewares/auth")
 
 const {
   getUsers,
@@ -10,24 +11,24 @@ const {
   getUser,
 } = require("../controllers/users");
 
-userRouter.get("/", getUsers);
+userRouter.get("/", auth, getUsers);
 
-userRouter.get("/me", getUserInfo);
+userRouter.get("/me", auth, getUserInfo);
 
-userRouter.patch('/me', celebrate({
+userRouter.patch('/me', auth, celebrate({
   body: Joi.object().keys({
     name: Joi.string().required().min(2).max(30),
     about: Joi.string().required().min(2).max(30),
   }),
 }), updateUserInfo);
 
-userRouter.patch('/me/avatar', celebrate({
+userRouter.patch('/me/avatar', auth, celebrate({
   body: Joi.object().keys({
     avatar: Joi.string().required().regex(/^(http|https)?:\/\/(www\.)?[-a-zA-Z0-9@:%._+~#=]{1,}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9-._~:/?#[\]@!$&'()*+,;=]*)?$/im),
   }),
 }), updateUserAvatar);
 
-userRouter.get('/:userId', celebrate({
+userRouter.get('/:userId', auth, celebrate({
   params: Joi.object().keys({
     userId: Joi.string().required().hex().length(24),
   }),
