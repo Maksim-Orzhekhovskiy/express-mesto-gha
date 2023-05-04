@@ -9,11 +9,11 @@ const getUsers = (req, res, next) => {
     .catch(next);
 };
 
-const getUserById = (req, res) => {
+const getUserById = (req, res, next) => {
   User.findById(req.params.userId)
     .orFail()
     .then((user) => res.send(user))
-    .catch((err) => handleErrors(err, res));
+    .catch(next);
 };
 
 const getUser = (req, res, next) => {
@@ -39,7 +39,9 @@ const createUser = (req, res, next) => {
       delete data.password;
       res.status(201).send(data);
     })
-    .catch(next);
+    .catch((next) => {
+      console.log(next)
+    })
 };
 
 const userUpdate = (req, res, updateUser, next) => {

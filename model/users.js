@@ -10,7 +10,7 @@ const userSchema = new mongoose.Schema(
       type: String,
       minlength: 2,
       maxlength: 30,
-      require: true,
+        require: true,
       default: "Жак-Ив Кусто",
     },
     about: {
@@ -26,7 +26,7 @@ const userSchema = new mongoose.Schema(
       default:
         "https://pictures.s3.yandex.net/resources/jacques-cousteau_1604399756.png",
       validate: {
-        validator: (url) => validator.isUrl(url),
+        validator: (url) => /^(http|https)?:\/\/(www\.)?[-a-zA-Z0-9@:%._+~#=]{1,}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9-._~:/?#[\]@!$&'()*+,;=]*)?$/im.test(url),
         message: "Неправильный формат ссылки на аватар",
       },
     },
