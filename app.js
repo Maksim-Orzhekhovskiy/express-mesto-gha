@@ -3,6 +3,12 @@ const express = require("express");
 const mongoose = require("mongoose");
 const userRouter = require("./routes/users");
 const cardRouter = require("./routes/cards");
+const signInRouter = require("./routes/signin");
+const signUpRouter = require("./routes/signup");
+const auth = require("./middlewares/auth")
+const helmet = require('helmet');
+const cookieParser = require('cookie-parser');
+const { errors: validationErrors } = require('celebrate');
 
 const { PORT = 3000 } = process.env;
 const DATABASE_URL = "mongodb://localhost:27017/mestodb";
@@ -20,16 +26,16 @@ mongoose
   });
 
 app.use(express.json());
+app.use(cookieParser());
+app.use(helmet());
 
-app.use((req, res, next) => {
-  req.user = {
-    _id: "643ec26fba83e927b24652c6", // вставьте сюда _id созданного в предыдущем пункте пользователя
-  };
-  next();
-});
+app.use(auth);
 
+app.use('/signin', signInRouter);
+app.use('/signup', signUpRouter);
 app.use('/users', userRouter);
 app.use('/cards', cardRouter);
+
 
 app.patch("/404", (req, res) => {
   res.status(404).json({ message: "Ты ошибся парень /404" });
