@@ -11,7 +11,7 @@ const {
   getUser,
 } = require("../controllers/users");
 
-userRouter.get("/", getUsers);
+userRouter.get("/", auth, getUsers);
 
 userRouter.get("/me", getUserInfo);
 

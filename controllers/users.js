@@ -10,16 +10,16 @@ const getUsers = (req, res, next) => {
     .catch(next);
 };
 
-// const getUserById = (req, res, next) => {
-//   User.findById(req.params.userId)
-//     .orFail()
-//     .then((user) => res.send(user))
-//     .catch(next);
-// };
+const getUserById = (req, res, next) => {
+  User.findById(req.params.userId)
+    .orFail()
+    .then((user) => res.send(user))
+    .catch(next);
+};
 
 const getUser = (req, res, next) => {
   const requiredData = req.params.userId;
-  findUserById(req, res, requiredData, next);
+  getUserById(req, res, requiredData, next);
 };
 
 const createUser = (req, res, next) => {
@@ -58,7 +58,7 @@ const updateUserInfo = (req, res, next) => {
 
 const getUserInfo = (req, res, next) => {
   const requiredData = req.user._id;
-  findUserById(req, res, requiredData, next);
+  getUserById(req, res, requiredData, next);
 };
 
 const updateUserAvatar = (req, res, next) => {
