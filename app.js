@@ -8,7 +8,8 @@ const signUpRouter = require("./routes/signup");
 const auth = require("./middlewares/auth")
 const helmet = require('helmet');
 const cookieParser = require('cookie-parser');
-const { errors: validationErrors } = require('celebrate');
+const { errors: validationErrors} = require('celebrate');
+const handleErrors = require("./middlewares/errors")
 
 const { PORT = 3000 } = process.env;
 const DATABASE_URL = "mongodb://localhost:27017/mestodb";
@@ -36,10 +37,11 @@ app.use('/signup', signUpRouter);
 app.use('/users', userRouter);
 app.use('/cards', cardRouter);
 
-
-app.patch("/404", (req, res) => {
-  res.status(404).json({ message: "Ты ошибся парень /404" });
-});
+app.use(validationErrors());
+app.use(handleErrors);
+// app.patch("/404", (req, res) => {
+//   res.status(404).json({ message: "Ты ошибся парень /404" });
+// });
 
 app.listen(PORT, () => {
   console.log(`Свервер стартанул на ${PORT}`);
