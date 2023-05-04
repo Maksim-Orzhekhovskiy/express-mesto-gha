@@ -10,12 +10,12 @@ const getUsers = (req, res, next) => {
     .catch(next);
 };
 
-const getUserById = (req, res, next) => {
-  User.findById(req.params.userId)
-    .orFail()
-    .then((user) => res.send(user))
-    .catch(next);
-};
+// const getUserById = (req, res, next) => {
+//   User.findById(req.params.userId)
+//     .orFail()
+//     .then((user) => res.send(user))
+//     .catch(next);
+// };
 
 const getUser = (req, res, next) => {
   const requiredData = req.params.userId;
