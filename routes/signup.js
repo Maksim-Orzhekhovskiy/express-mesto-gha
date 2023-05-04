@@ -1,9 +1,9 @@
 const express = require("express");
 const signUpRouter = express.Router();
 const { celebrate, Joi } = require("celebrate");
-const  { createUser }  = require("../controllers/users");
+const { createUser } = require("../controllers/users");
 
-router.post(
+signUpRouter.post(
   "/",
   celebrate({
     body: Joi.object().keys({

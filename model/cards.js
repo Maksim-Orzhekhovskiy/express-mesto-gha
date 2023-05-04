@@ -1,4 +1,5 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
+const validator = require("validator");
 
 const cardSchema = new mongoose.Schema(
   {
@@ -12,20 +13,20 @@ const cardSchema = new mongoose.Schema(
       type: String,
       required: true,
       validate: {
-        validator: (url) => /^(http|https)?:\/\/(www\.)?[-a-zA-Z0-9@:%._+~#=]{1,}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9-._~:/?#[\]@!$&'()*+,;=]*)?$/im.test(url),
-        message: 'Неправильный формат ссылки на аватар',
+        validator: (url) => validator.isURL(url),
+        message: "Неправильный формат ссылки на аватар",
       },
     },
     owner: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: 'user',
+      ref: "user",
       required: true,
     },
     likes: {
       type: [
         {
           type: mongoose.Schema.Types.ObjectId,
-          ref: 'user',
+          ref: "user",
         },
       ],
       default: [],
@@ -37,7 +38,7 @@ const cardSchema = new mongoose.Schema(
   },
   {
     versionKey: false,
-  },
+  }
 );
 
-module.exports = mongoose.model('card', cardSchema);
+module.exports = mongoose.model("card", cardSchema);

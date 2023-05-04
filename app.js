@@ -3,9 +3,6 @@ const express = require("express");
 const mongoose = require("mongoose");
 const userRouter = require("./routes/users");
 const cardRouter = require("./routes/cards");
-const login = require("./routes/users");
-const createUser = require("./routes/users");
-const auth = require("./middlewares/auth");
 
 const { PORT = 3000 } = process.env;
 const DATABASE_URL = "mongodb://localhost:27017/mestodb";
@@ -24,13 +21,15 @@ mongoose
 
 app.use(express.json());
 
-app.post("/signin", login);
-app.post("/signup", createUser);
+app.use((req, res, next) => {
+  req.user = {
+    _id: "643ec26fba83e927b24652c6", // вставьте сюда _id созданного в предыдущем пункте пользователя
+  };
+  next();
+});
 
-app.use(auth);
-
-app.use("/users", userRouter);
-app.use("/cards", cardRouter);
+app.use('/users', userRouter);
+app.use('/cards', cardRouter);
 
 app.patch("/404", (req, res) => {
   res.status(404).json({ message: "Ты ошибся парень /404" });

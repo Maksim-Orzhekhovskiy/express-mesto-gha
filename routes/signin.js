@@ -3,7 +3,7 @@ const signInRouter = express.Router();
 const { celebrate, Joi } = require("celebrate");
 const { login } = require("../controllers/users");
 
-router.post(
+signInRouter.post(
   "/",
   celebrate({
     body: Joi.object().keys({

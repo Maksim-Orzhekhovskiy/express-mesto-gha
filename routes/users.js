@@ -4,20 +4,33 @@ const { celebrate, Joi } = require("celebrate");
 
 const {
   getUsers,
-  createUser,
-  getUserById,
+  getUserInfo,
   updateUserInfo,
   updateUserAvatar,
+  getUser,
 } = require("../controllers/users");
 
 userRouter.get("/", getUsers);
 
-userRouter.get("/:userId", getUserById);
+userRouter.get("/me", getUserInfo);
 
-userRouter.post("/", createUser);
+userRouter.patch('/me', celebrate({
+  body: Joi.object().keys({
+    name: Joi.string().required().min(2).max(30),
+    about: Joi.string().required().min(2).max(30),
+  }),
+}), updateUserInfo);
 
-userRouter.patch("/me", updateUserInfo);
+userRouter.patch('/me/avatar', celebrate({
+  body: Joi.object().keys({
+    avatar: Joi.string().required().regex(/^(http|https)?:\/\/(www\.)?[-a-zA-Z0-9@:%._+~#=]{1,}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9-._~:/?#[\]@!$&'()*+,;=]*)?$/im),
+  }),
+}), updateUserAvatar);
 
-userRouter.patch("/me/avatar", updateUserAvatar);
+userRouter.get('/:userId', celebrate({
+  params: Joi.object().keys({
+    userId: Joi.string().required().hex().length(24),
+  }),
+}), getUser);
 
 module.exports = userRouter;

@@ -2,6 +2,7 @@
 const mongoose = require("mongoose");
 const validator = require("validator");
 const bcrypt = require("bcrypt");
+const UnauthorizedError = require("../errors/unauthorizedError");
 
 const userSchema = new mongoose.Schema(
   {
@@ -25,10 +26,7 @@ const userSchema = new mongoose.Schema(
       default:
         "https://pictures.s3.yandex.net/resources/jacques-cousteau_1604399756.png",
       validate: {
-        validator: (url) =>
-          /^(http|https)?:\/\/(www\.)?[-a-zA-Z0-9@:%._+~#=]{1,}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9-._~:/?#[\]@!$&'()*+,;=]*)?$/im.test(
-            url
-          ),
+        validator: (url) => validator.isUrl(url),
         message: "Неправильный формат ссылки на аватар",
       },
     },
@@ -44,23 +42,22 @@ const userSchema = new mongoose.Schema(
     password: {
       type: String,
       require: true,
+      select: false,
     },
   },
   {
     versionKey: false,
     statics: {
-      findUserByCredentials: function (email, password) {
+      findUserByCredentials(email, password) {
         return this.findOne({ email })
           .select("+password")
           .then((user) => {
             if (!user) {
-              return Promise.reject(new Error("Неправильные почта или пароль"));
+              throw new UnauthorizedError("Неправильная почта или пароль");
             }
             return bcrypt.compare(password, user.password).then((matched) => {
               if (!matched) {
-                return Promise.reject(
-                  new Error("Неправильные почта или пароль")
-                );
+                throw new UnauthorizedError("Неправильная почта или пароль");
               }
               return user;
             });
