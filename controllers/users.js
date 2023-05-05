@@ -1,8 +1,9 @@
 const User = require("../model/users");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
-const { NODE_ENV, JWT_SECRET } = process.env;
 const UnauthorizedError = require("../errors/unauthorizedError");
+const { NODE_ENV, SECRET_KEY } = process.env;
+
 
 const getUsers = (req, res, next) => {
   User.find({})
@@ -68,27 +69,28 @@ const updateUserAvatar = (req, res, next) => {
 
 const login = (req, res, next) => {
   const { email, password } = req.body;
-  return User.findOne({ email })
+  return User.findUserByCredentials({ email })
     .select("+password")
     .then((user) => {
       if (!user) {
-        throw new UnauthorizedError("Необходима авторизация");
+        throw new UnauthorizedError("Необходима авторизация1");
       }
       return bcrypt.compare(password, user.password).then((matched) => {
         if (!matched) {
-          throw new UnauthorizedError("Необходима авторизация");
+          throw new UnauthorizedError("Необходима авторизация2");
         }
-        const jwtoken = jwt.sign(
+        const token = jwt.sign(
           { _id: user._id },
-          NODE_ENV === "production" ? JWT_SECRET : "dev-secret",
+          NODE_ENV === "production" ? SECRET_KEY : "dev-secret",
           { expiresIn: "7d" }
         );
-        res.cookie("jwt", jwtoken, { maxAge: 3600000 * 24 * 7, httpOnly: true });
+        res.cookie("jwt", token, { maxAge: 3600000 * 24 * 7, httpOnly: true, sameSite: true });
         res.status(200).send({ message: "Аутентификация прошла успешно" });
       });
     })
     .catch(next);
 };
+
 
 module.exports = {
   getUsers,

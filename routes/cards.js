@@ -1,7 +1,7 @@
 const express = require("express");
 const cardRouter = express.Router();
 const { celebrate, Joi } = require("celebrate");
-const auth = require("../middlewares/auth");
+// const auth = require("../middlewares/auth");
 
 const {
   getAllCards,
