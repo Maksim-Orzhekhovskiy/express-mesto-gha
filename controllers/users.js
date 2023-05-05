@@ -2,7 +2,6 @@ const User = require("../model/users");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const UnauthorizedError = require("../errors/unauthorizedError");
-// const { NODE_ENV, SECRET_KEY } = process.env;
 
 
 const getUsers = (req, res, next) => {

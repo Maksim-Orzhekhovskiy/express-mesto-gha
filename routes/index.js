@@ -5,7 +5,6 @@ const signin = require("./signin");
 const signup = require("./signup");
 const users = require("./users");
 const cards = require("./cards");
-// const notFound = require('./notFound');
 
 const auth = require("../middlewares/auth");
 const NotFoundError = require("../errors/notFoundError");
@@ -17,7 +16,6 @@ indexRouter.use("/cards", auth, cards);
 indexRouter.use("*", (req, res, next) => {
   next(new NotFoundError("Страницы не существует"))
 })
-// indexRouter.use("*", notFound);
 
 // EXPORT ROUTES
 module.exports = indexRouter;
