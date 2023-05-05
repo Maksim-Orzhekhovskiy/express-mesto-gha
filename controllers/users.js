@@ -11,8 +11,8 @@ const getUsers = (req, res, next) => {
     .catch(next);
 };
 
-const getUserById = (req, res, next) => {
-  User.findById(req.params.userId)
+const getUserById = (req, res, userData, next) => {
+  User.findById(userData)
     .orFail()
     .then((user) => res.send(user))
     .catch(next);
@@ -52,17 +52,17 @@ const userUpdate = (req, res, updateUser, next) => {
     .catch(next);
 };
 
-const updateUserInfo = (req, res, next) => {
+const getUserInfo = (req, res, next) => {
+  const dataUser = req.user._id;
+  getUserById(req, res, dataUser, next);
+};
+
+const updateUserAvatar = (req, res, next) => {
   const updateUser = req.body;
   userUpdate(req, res, updateUser, next);
 };
 
-const getUserInfo = (req, res, next) => {
-  const updateUser = req.user._id;
-  getUserById(req, res, updateUser, next);
-};
-
-const updateUserAvatar = (req, res, next) => {
+const updateUserInfo = (req, res, next) => {
   const updateUser = req.body;
   userUpdate(req, res, updateUser, next);
 };
