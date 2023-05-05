@@ -2,7 +2,7 @@ const User = require("../model/users");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const UnauthorizedError = require("../errors/unauthorizedError");
-const { NODE_ENV, SECRET_KEY } = process.env;
+// const { NODE_ENV, SECRET_KEY } = process.env;
 
 
 const getUsers = (req, res, next) => {
@@ -76,7 +76,7 @@ const login = (req, res, next) => {
       }
       const token = jwt.sign(
         { _id: user._id },
-        NODE_ENV === "production" ? SECRET_KEY : "dev-secret",
+        "dev-secret-key",
         { expiresIn: "7d" }
       );
         res.cookie("jwt", token, { maxAge: 3600000 * 24 * 7, httpOnly: true, sameSite: true });
