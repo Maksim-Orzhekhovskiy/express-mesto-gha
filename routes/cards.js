@@ -11,7 +11,7 @@ const {
   dislikeCard,
 } = require("../controllers/cards");
 
-cardRouter.get("/", auth, getAllCards);
+cardRouter.get("/", getAllCards);
 
 cardRouter.post(
   "/",
