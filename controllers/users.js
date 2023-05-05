@@ -58,8 +58,8 @@ const updateUserInfo = (req, res, next) => {
 };
 
 const getUserInfo = (req, res, next) => {
-  const requiredData = req.user._id;
-  getUserById(req, res, requiredData, next);
+  const updateUser = req.user._id;
+  getUserById(req, res, updateUser, next);
 };
 
 const updateUserAvatar = (req, res, next) => {
@@ -69,8 +69,7 @@ const updateUserAvatar = (req, res, next) => {
 
 const login = (req, res, next) => {
   const { email, password } = req.body;
-  return User.findUserByCredentials({ email })
-    .select("+password")
+  return User.findUserByCredentials({ email, password })
     .then((user) => {
       if (!user) {
         throw new UnauthorizedError("Необходима авторизация1");
