@@ -69,23 +69,18 @@ const updateUserAvatar = (req, res, next) => {
 
 const login = (req, res, next) => {
   const { email, password } = req.body;
-  return User.findUserByCredentials({ email, password })
+  return User.findUserByCredentials( email, password )
     .then((user) => {
       if (!user) {
         throw new UnauthorizedError("Необходима авторизация1");
       }
-      return bcrypt.compare(password, user.password).then((matched) => {
-        if (!matched) {
-          throw new UnauthorizedError("Необходима авторизация2");
-        }
-        const token = jwt.sign(
-          { _id: user._id },
-          NODE_ENV === "production" ? SECRET_KEY : "dev-secret",
-          { expiresIn: "7d" }
-        );
+      const token = jwt.sign(
+        { _id: user._id },
+        NODE_ENV === "production" ? SECRET_KEY : "dev-secret",
+        { expiresIn: "7d" }
+      );
         res.cookie("jwt", token, { maxAge: 3600000 * 24 * 7, httpOnly: true, sameSite: true });
         res.status(200).send({ message: "Аутентификация прошла успешно" });
-      });
     })
     .catch(next);
 };
