@@ -1,7 +1,6 @@
 const User = require("../model/users");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
-const UnauthorizedError = require("../errors/unauthorizedError");
 
 
 const getUsers = (req, res, next) => {
@@ -70,9 +69,6 @@ const login = (req, res, next) => {
   const { email, password } = req.body;
   return User.findUserByCredentials( email, password )
     .then((user) => {
-      if (!user) {
-        throw new UnauthorizedError("Необходима авторизация1");
-      }
       const token = jwt.sign(
         { _id: user._id },
         "dev-secret-key",
